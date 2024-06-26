@@ -2,3 +2,6 @@ name: ThePet
 version: 1.0
 main: org.bluehats.ThePet
 api-version: 1.20
+
+commands:
+  bingus:

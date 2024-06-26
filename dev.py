@@ -5,7 +5,7 @@ import sys
 import urllib.request
 
 MAX_SERVER_MEMORY_GB = 4
-PROJECT_ROOT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+PROJECT_ROOT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".")
 LOCAL_SERVER_DIR = os.path.join(PROJECT_ROOT_DIR, "server")
 PLUGIN_DIR = os.path.join(LOCAL_SERVER_DIR, "plugins")
 DEPENDENCIES = {
