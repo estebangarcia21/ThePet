@@ -27,8 +27,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-//    implementation("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
     implementation("org.spigotmc:spigot:1.20.6-R0.1-SNAPSHOT")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 }
 

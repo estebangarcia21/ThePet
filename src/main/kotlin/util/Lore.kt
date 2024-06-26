@@ -3,19 +3,19 @@ package org.bluehats.util
 import org.bukkit.ChatColor
 import java.util.*
 
-fun String.colorize(defaultColor: ChatColor = ChatColor.GRAY): String {
+fun String.colorize(defaultColor: ChatColor = ChatColor.GRAY, noResetChars: Boolean = false): String {
     var acc = defaultColor.toString() + this
 
     ChatColor.entries.forEach { c ->
         val name = c.name.lowercase(Locale.getDefault()).replace("_", "-")
 
         acc = acc.replace("<$name>", c.toString())
-        acc = acc.replace("</$name>", defaultColor.toString())
+        acc = acc.replace("</$name>", if (noResetChars) "" else defaultColor.toString())
 
         acc = acc.replace("<$name:bold>", c.toString() + ChatColor.BOLD.toString())
-        acc = acc.replace("</$name:bold>", ChatColor.RESET.toString() + defaultColor.toString())
+        acc = acc.replace("</$name:bold>", if (noResetChars) "" else ChatColor.RESET.toString() + defaultColor.toString())
 
-        acc += defaultColor.toString()
+        if (!noResetChars) acc += defaultColor.toString()
     }
 
     return acc

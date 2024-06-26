@@ -1,7 +1,6 @@
 package org.bluehats.commands
 
-import org.bluehats.util.buildLore
-import org.bluehats.util.colorize
+import org.bluehats.util.*
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -14,24 +13,31 @@ class Bingus : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val player = sender as Player
 
-        val sword = ItemStack(Material.WOODEN_SWORD)
+        val sword = ItemStack(Material.GOLDEN_SWORD)
+
+        setWeaponBaseDamage(
+            sword,
+            DamageId(DamageType.NEUTRAL, 0, 1),
+            DamageId(DamageType.EARTH, 0, 1),
+            DamageId(DamageType.THUNDER, 0, 1),
+            DamageId(DamageType.WATER, 0, 1),
+            DamageId(DamageType.FIRE, 0, 1),
+            DamageId(DamageType.AIR, 0, 1)
+        )
 
         val meta = sword.itemMeta!!
         meta.isUnbreakable = true
 
-        meta.lore = buildLore("""
-            Super Slow Attack Speed
-            <gold>✤ Neutral</gold> Damage: 999-1026
-            <dark-green>✤ Earth</dark-green> Damage: 1027-1652
-            <yellow>✦ Thunder</yellow> Damage: 0-1102
-            <aqua>❉ Water</aqua> Damage: 52-120
-            <red>✹ Fire</red> Damage: 200-512
-            <white>❋ Air</white> Damage: 100-100
-            <red>Default Item</red>
-            Your first item in <italic>The Pet</italic>."""
+        meta.lore = buildLore(
+            "Super Fast Attack Speed",
+            "",
+            *getWeaponDamagesLore(sword),
+            "",
+            "<yellow>Default Item</yellow>",
+            "Your first item in <italic>The Pet</italic>, you monkey!"
         )
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ADDITIONAL_TOOLTIP)
-        meta.setDisplayName("<red>Magical Stick</red>".colorize())
+        meta.setDisplayName("<yellow>Monkey Sword</yellow>".colorize())
 
         sword.itemMeta = meta
 
