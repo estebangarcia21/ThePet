@@ -20,7 +20,8 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 object DamageManager : Listener {
-    private val timer = Timer<UUID>()
+    private val playerAttackTimer = Timer<UUID>()
+    private val hologramLiveTimer = Timer<UUID>()
 
     @EventHandler
     fun onPetDamage(event: PetDamageEvent) {
@@ -36,18 +37,20 @@ object DamageManager : Listener {
         val weapon = Weapon.fromItem(damagerWeapon) ?: return
         val damages = weapon.randomDamages
 
-        timer.cooldown(
+        playerAttackTimer.cooldown(
             id = damager.uniqueId,
             ticks = weapon.attackSpeed.attackDelayTicks,
-            resetTime = false,
-            operation = {
-                damages.forEach {
-                    damaged.gameState.health -= it.amount
-                }
-                damaged.sendMessage("${damaged.gameState.health}")
-                displayHologramDamage(damager, damaged.location, timer, damages)
+            resetTime = false
+        ) {
+            damages.forEach {
+                damaged.gameState.health -= it.amount
             }
-        )
+
+            damaged.sendMessage("${damaged.gameState.health}")
+            damaged.damage(0.0)
+
+            displayHologramDamage(damager, damaged.location, hologramLiveTimer, damages)
+        }
     }
 }
 

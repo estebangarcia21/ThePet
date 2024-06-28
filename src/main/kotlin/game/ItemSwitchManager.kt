@@ -4,6 +4,7 @@ import org.bluehats.util.Weapon
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -11,12 +12,15 @@ import org.bukkit.potion.PotionEffectType
 
 object ItemSwitchManager : Listener {
     @EventHandler
-    fun onPlayerItemSwitch(event: PlayerSwapHandItemsEvent) {
+    fun onPlayerItemSwitch(event: PlayerItemHeldEvent) {
         val player: Player = event.player
         val mainHandItem: ItemStack = player.inventory.itemInMainHand
 
         val weapon = Weapon.fromItem(mainHandItem) ?: return
         var speedLevel = weapon.attackSpeed.speedLevel
+
+        player.removePotionEffect(PotionEffectType.MINING_FATIGUE)
+        player.removePotionEffect(PotionEffectType.HASTE)
 
         if (speedLevel < 0) {
             speedLevel *= -1

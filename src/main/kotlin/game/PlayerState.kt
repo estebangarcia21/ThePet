@@ -32,6 +32,4 @@ class PlayerState(private val player: Player) {
         reset()
     }
 
-
-
 }
