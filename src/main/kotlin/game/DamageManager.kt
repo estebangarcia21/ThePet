@@ -20,7 +20,7 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 object DamageManager : Listener {
-    private val hologramLiveTimer = Timer<UUID>()
+    private val timer = Timer<UUID>()
 
     @EventHandler
     fun onPetDamage(event: PetDamageEvent) {
@@ -36,13 +36,18 @@ object DamageManager : Listener {
         val weapon = Weapon.fromItem(damagerWeapon) ?: return
         val damages = weapon.randomDamages
 
-        damages.forEach {
-            damaged.gameState.health -= it.amount
-        }
-
-        damaged.sendMessage("${damaged.gameState.health}")
-
-        displayHologramDamage(damager, damaged.location, hologramLiveTimer, damages)
+        timer.cooldown(
+            id = damager.uniqueId,
+            ticks = weapon.attackSpeed.attackDelayTicks,
+            resetTime = false,
+            operation = {
+                damages.forEach {
+                    damaged.gameState.health -= it.amount
+                }
+                damaged.sendMessage("${damaged.gameState.health}")
+                displayHologramDamage(damager, damaged.location, timer, damages)
+            }
+        )
     }
 }
 
@@ -52,9 +57,8 @@ object DamageListener : Listener {
         val damager = event.damager as? Player ?: return
         val damaged = event.entity as? Player ?: return
 
-        val e = PetDamageEvent(damager, damaged, event)
 
-        // TODO: Check if has nbt tag "petweapon" = true
+        val e = PetDamageEvent(damager, damaged, event)
 
         Bukkit.getPluginManager().callEvent(e)
     }

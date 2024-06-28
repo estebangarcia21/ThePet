@@ -7,6 +7,7 @@ import org.bluehats.events.AutoRespawn
 import org.bluehats.game.DamageListener
 import org.bluehats.game.DamageManager
 import org.bluehats.game.GameManager
+import org.bluehats.game.ItemSwitchManager
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -27,6 +28,7 @@ class ThePet : JavaPlugin() {
         this.server.pluginManager.registerEvents(DamageListener, this)
         this.server.pluginManager.registerEvents(DamageManager, this)
         this.server.pluginManager.registerEvents(AutoRespawn, this)
+        this.server.pluginManager.registerEvents(ItemSwitchManager, this )
     }
 
     override fun onLoad() {

@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import java.util.UUID
 
 object GameManager : Listener {
@@ -21,6 +22,7 @@ object GameManager : Listener {
     fun onPlayerQuitEvent(event: PlayerQuitEvent) {
         playerStates.remove(event.player.uniqueId)
     }
+
 }
 
 val Player.gameState: PlayerState
