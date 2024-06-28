@@ -14,11 +14,11 @@ object Bingus : CommandExecutor {
 
         val sword = ItemStack(Material.GOLDEN_SWORD)
 
-        val weapon = Weapon(sword, "The Wrath of a Monkey", Rarity.MYTHIC, WeaponType.SWORD, AttackSpeed.SUPER_FAST, listOf(
-            DamageId(DamageType.NEUTRAL, 0, 100),
-            DamageId(DamageType.LIGHT, 0, 100),
-            DamageId(DamageType.DARK, 0, 100),
-        ))
+        val weapon = Weapon(sword, "The Wrath of a Monkey", Rarity.MYTHIC, WeaponType.SWORD, AttackSpeed.SUPER_SLOW, listOf(
+            DamageId(DamageType.NEUTRAL, 10, 32),
+            DamageId(DamageType.LIGHT, 20, 47),
+            DamageId(DamageType.DARK, 0, 666),
+        ), "You monkey!")
 
         weapon.applyItemData()
 
