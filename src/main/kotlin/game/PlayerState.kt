@@ -1,6 +1,9 @@
 package org.bluehats.game
 
+import org.bluehats.util.Timer
+import org.bluehats.util.getNBTString
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import kotlin.math.roundToInt
 import java.util.UUID
 private const val BASE_HEALTH = 1000.0
@@ -29,5 +32,6 @@ class PlayerState(private val player: Player) {
         reset()
     }
 
-//    fun attackDownTime(item: ItemStack, timer: Timer<UUID> )
+
+
 }
