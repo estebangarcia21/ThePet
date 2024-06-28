@@ -2,10 +2,10 @@ package org.bluehats.game
 
 import org.bukkit.entity.Player
 import kotlin.math.roundToInt
-
+import java.util.UUID
 private const val BASE_HEALTH = 1000.0
 
-class PlayerState(val mcPlayer: Player) {
+class PlayerState(private val player: Player) {
     private val maxHealth = BASE_HEALTH
 
     var health: Double = maxHealth
@@ -24,8 +24,10 @@ class PlayerState(val mcPlayer: Player) {
     }
 
     private fun kill() {
-        mcPlayer.health = 0.0
+        player.health = 0.0
 
         reset()
     }
+
+//    fun attackDownTime(item: ItemStack, timer: Timer<UUID> )
 }

@@ -3,6 +3,7 @@ package org.bluehats.util
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.wrappers.WrappedDataValue
+import com.comphenix.protocol.wrappers.WrappedDataWatcher
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer
 import com.comphenix.protocol.wrappers.WrappedWatchableObject
@@ -108,4 +109,4 @@ val BYTE_SERIALIZER: Serializer = Registry.get(java.lang.Byte::class.java)
 val INT_SERIALIZER: Serializer = Registry.get(java.lang.Integer::class.java)
 val CHAT_SERIALIZER: Serializer = Registry.getChatComponentSerializer(false)
 val CHAT_OPTIONAL_SERIALIZER: Serializer = Registry.getChatComponentSerializer(true)
-val VECTOR_SERIALIZER: Serializer = Registry.getVectorSerializer()
+val VECTOR_SERIALIZER: Serializer = Registry.get(org.joml.Vector3f::class.java)

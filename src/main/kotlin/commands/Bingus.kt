@@ -6,7 +6,6 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 object Bingus : CommandExecutor {
@@ -15,28 +14,13 @@ object Bingus : CommandExecutor {
 
         val sword = ItemStack(Material.GOLDEN_SWORD)
 
-        setWeaponBaseDamage(
-            sword,
-            DamageId(DamageType.NEUTRAL, 15, 44),
-            DamageId(DamageType.LIGHT, 6, 12),
-            DamageId(DamageType.DARK, 42, 90)
-        )
+        val weapon = Weapon(sword, "The Wrath of a Monkey", Rarity.MYTHIC, WeaponType.SWORD, AttackSpeed.SUPER_FAST, listOf(
+            DamageId(DamageType.NEUTRAL, 0, 100),
+            DamageId(DamageType.LIGHT, 0, 100),
+            DamageId(DamageType.DARK, 0, 100),
+        ))
 
-        val meta = sword.itemMeta!!
-        meta.isUnbreakable = true
-
-        meta.lore = buildLore(
-            "<bold>Super Fast Attack Speed</bold>",
-            "",
-            *getWeaponDamagesLore(sword),
-            "",
-            "<dark-purple>Default Item</dark-purple>",
-            "Your first item in <italic>The Pet</italic>, you monkey!"
-        )
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ADDITIONAL_TOOLTIP)
-        meta.setDisplayName("<dark-purple>Monkey Sword</dark-purple>".colorize())
-
-        sword.itemMeta = meta
+        weapon.applyItemData()
 
         player.inventory.addItem(sword)
 
