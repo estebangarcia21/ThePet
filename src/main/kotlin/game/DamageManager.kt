@@ -90,6 +90,7 @@ private fun displayHologramDamage(damager: Player, damagedLocation: Location, ti
         WrappedDataValue(15, BYTE_SERIALIZER, 3.toByte()),
         WrappedDataValue(23, CHAT_SERIALIZER, WrappedChatComponent.fromText(attackDisplay).handle),
         WrappedDataValue(24, INT_SERIALIZER, 500),
+        WrappedDataValue(25, INT_SERIALIZER, 0xFF000000.toInt()),
     ))
 
     val duration = 14 * TICKS
@@ -100,12 +101,7 @@ private fun displayHologramDamage(damager: Player, damagedLocation: Location, ti
         updateClientSideEntityPositionLT8(damager, hologramId, 0.0, -dy.toDouble() / 9.0, 0.0)
 
         setClientSideEntityMetadata(damager, hologramId, listOf(
-            WrappedDataValue(9, INT_SERIALIZER, 60),
-            WrappedDataValue(10, INT_SERIALIZER, 20),
             WrappedDataValue(12, VECTOR_SERIALIZER, org.joml.Vector3f(dy, dy, dy)),
-            WrappedDataValue(15, BYTE_SERIALIZER, 3.toByte()),
-            WrappedDataValue(23, CHAT_SERIALIZER, WrappedChatComponent.fromText(attackDisplay).handle),
-            WrappedDataValue(24, INT_SERIALIZER, 500),
         ))
     }) {
         destroyClientSideEntity(damager, hologramId)
