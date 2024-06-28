@@ -5,7 +5,9 @@ import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.wrappers.WrappedDataValue
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer
+import com.comphenix.protocol.wrappers.WrappedWatchableObject
 import it.unimi.dsi.fastutil.ints.IntArrayList
+import net.minecraft.core.Vector3f
 import org.bluehats.ThePet
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
@@ -17,8 +19,8 @@ import kotlin.math.min
 /**
  * @return The client-side entity ID.
  */
-fun spawnClientSideEntity(player: Player, location: Location, type: EntityType): Int {
-    val entityId = (0..Int.MAX_VALUE).random()
+fun spawnClientSideEntity(player: Player, location: Location, type: EntityType, overrideEntityId: Int? = null, metadata: List<WrappedDataValue> = emptyList()): Pair<Int, UUID> {
+    val entityId = overrideEntityId ?: (0..Int.MAX_VALUE).random()
     val entityUUID = UUID.randomUUID()
     val packet = PacketContainer(PacketType.Play.Server.SPAWN_ENTITY)
 
@@ -31,9 +33,19 @@ fun spawnClientSideEntity(player: Player, location: Location, type: EntityType):
         .write(1, location.y)
         .write(2, location.z)
 
-    ThePet.protocolManager.sendServerPacket(player, packet)
+    val metadataPacket = if (metadata.isNotEmpty()) {
+        val pkt = PacketContainer(PacketType.Play.Server.ENTITY_METADATA)
 
-    return entityId
+        pkt.integers.write(0, entityId)
+        pkt.dataValueCollectionModifier.write(0, metadata)
+
+        pkt
+    } else null
+
+    ThePet.protocolManager.sendServerPacket(player, packet)
+    if (metadataPacket != null) ThePet.protocolManager.sendServerPacket(player, metadataPacket)
+
+    return entityId to entityUUID
 }
 
 /**
@@ -71,13 +83,13 @@ fun destroyClientSideEntity(player: Player, id: Int) {
     ThePet.protocolManager.sendServerPacket(player, packet)
 }
 
-fun setClientSideEntityMetadata(entityId: Int, data: List<WrappedDataValue>) {
+fun setClientSideEntityMetadata(player: Player, entityId: Int, data: List<WrappedDataValue>) {
     val metadata = PacketContainer(PacketType.Play.Server.ENTITY_METADATA)
 
     metadata.integers.write(0, entityId)
     metadata.dataValueCollectionModifier.write(0, data)
 
-    ThePet.protocolManager.broadcastServerPacket(metadata)
+    ThePet.protocolManager.sendServerPacket(player, metadata)
 }
 
 private fun toFixedPoint12Bit(n: Double): Short = (n * (1 shl 12)).toInt().toShort()
@@ -96,3 +108,4 @@ val BYTE_SERIALIZER: Serializer = Registry.get(java.lang.Byte::class.java)
 val INT_SERIALIZER: Serializer = Registry.get(java.lang.Integer::class.java)
 val CHAT_SERIALIZER: Serializer = Registry.getChatComponentSerializer(false)
 val CHAT_OPTIONAL_SERIALIZER: Serializer = Registry.getChatComponentSerializer(true)
+val VECTOR_SERIALIZER: Serializer = Registry.getVectorSerializer()
