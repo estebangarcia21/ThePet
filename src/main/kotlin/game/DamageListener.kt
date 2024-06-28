@@ -98,6 +98,8 @@ private fun displayHologramDamage(damager: Player, damagedLocation: Location, ti
 
     val (hologramId, hologramUUID) = spawnClientSideEntity(damager, holoLoc, EntityType.TEXT_DISPLAY, metadata = listOf(
 //        WrappedDataValue(12, vectorSerializer, org.joml.Vector3f(2f, 2f, 2f)),
+        WrappedDataValue(9, INT_SERIALIZER, 60),
+        WrappedDataValue(10, INT_SERIALIZER, 20),
         WrappedDataValue(15, BYTE_SERIALIZER, 3.toByte()),
         WrappedDataValue(23, CHAT_SERIALIZER, WrappedChatComponent.fromText(attackDisplay).handle),
         WrappedDataValue(24, INT_SERIALIZER, 500),
@@ -108,9 +110,11 @@ private fun displayHologramDamage(damager: Player, damagedLocation: Location, ti
         val movementStep = 1 - tick.toDouble() / duration.toDouble()
         val dy = 1f + (holoMovementFunc(1*movementStep)).toFloat()
 
-//        updateClientSideEntityPositionLT8(damager, hologramId, 0.0, dy, 0.0)
+        updateClientSideEntityPositionLT8(damager, hologramId, 0.0, -dy.toDouble() / 9.0, 0.0)
 
         setClientSideEntityMetadata(damager, hologramId, listOf(
+            WrappedDataValue(9, INT_SERIALIZER, 60),
+            WrappedDataValue(10, INT_SERIALIZER, 20),
             WrappedDataValue(12, vectorSerializer, org.joml.Vector3f(dy, dy, dy)),
             WrappedDataValue(15, BYTE_SERIALIZER, 3.toByte()),
             WrappedDataValue(23, CHAT_SERIALIZER, WrappedChatComponent.fromText(attackDisplay).handle),
